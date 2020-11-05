@@ -12,9 +12,9 @@ $currentID = get_user_id();
 $currentUsername = get_username();
 $currentEmail = get_email();
 
-echo "ID: $currentID <br>";
-echo "Username: $currentUsername <br>";
-echo "Email: $currentEmail <br><br>";
+ flash("ID: $currentID");
+ flash("Username: $currentUsername");
+ flash("Email: $currentEmail");
 
 
 $db = getDB();
@@ -129,3 +129,4 @@ if (isset($_POST["saved"])) {
     <input type="password" name="confirm"/>
     <input type="submit" name="saved" value="Save Profile"/>
 </form>
+<?php require(__DIR__ . "/partials/flash.php");?>

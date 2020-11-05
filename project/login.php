@@ -3,7 +3,7 @@
     {
 	if($_GET["isLoggedOut"])
 	{
-	    echo "Logged out sucessfully! <br>";
+	    flash("Logged out sucessfully!");
 	}
     }
 ?>
@@ -41,7 +41,7 @@ if (isset($_POST["login"])) {
     }
     if (!strpos($email, "@") && isset($username)) {
         $isValid = false;
-        echo "<br>Invalid email<br>";
+        flash("Invalid email");
     }
     if ($isValid) {
         $db = getDB();
@@ -59,7 +59,7 @@ if (isset($_POST["login"])) {
             echo "db returned: " . var_export($r, true);
             $e = $stmt->errorInfo();
             if ($e[0] != "00000") {
-                echo "uh oh something went wrong: " . var_export($e, true);
+                flash("uh oh something went wrong: ");
             }
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result && isset($result["password"])) {
@@ -83,16 +83,17 @@ SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id wher
                     header("Location: profile.php");
                 }
                 else {
-                    echo "<br>Invalid password, get out!<br>";
+                    flash("<br>Invalid password, get out!<br>");
                 }
             }
             else {
-                echo "<br>Email, username, or password not found<br>";
+                flash("<br>Email, username, or password not found<br>");
             }
         }
     }
     else {
-        echo "There was a validation issue";
+        flash("There was a validation issue");
     }
 }
 ?>
+<?php require(__DIR__ . "/partials/flash.php");?>
