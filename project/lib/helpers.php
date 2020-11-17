@@ -39,6 +39,47 @@ function get_user_id() {
     return -1;
 }
 
+function getWeeklyScores() {
+	$currentTime = date('Y-m-d H:i:s');
+	$oneWeekAgo = strtotime("-1 week");
+	$db = getDB();
+	$stmt = $db->prepare("SELECT * FROM Scores WHERE :oneWeekAgo > created order by score ASC");
+	$r = $stmt->execute([
+		":oneWeekAgo"=>$oneWeekAgo
+	]);
+	
+	if ($r) {
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
+function getMonthlyScores() {
+	$currentTime = date('Y-m-d H:i:s');
+	$oneWeekAgo = strtotime("-1 month");
+	$db = getDB();
+	$stmt = $db->prepare("SELECT * FROM Scores WHERE :oneWeekAgo > created order by score ASC");
+	$r = $stmt->execute([
+		":oneWeekAgo"=>$oneWeekAgo
+	]);
+	
+	if ($r) {
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
+function getAllTimeScores() {
+	$currentTime = date('Y-m-d H:i:s');
+
+	$db = getDB();
+	$stmt = $db->prepare("SELECT * FROM Scores order by score ASC");
+	$r = $stmt->execute([
+	]);
+	
+	if ($r) {
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
 function safer_echo($var) {
     if (!isset($var)) {
         echo "";

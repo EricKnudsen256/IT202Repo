@@ -8,6 +8,7 @@ if (!is_logged_in()) {
     die(header("Location: login.php"));
 }
 
+
 $currentID = get_user_id();
 $currentUsername = get_username();
 $currentEmail = get_email();
@@ -112,10 +113,12 @@ if (isset($_POST["saved"])) {
     else {
         //else for $isValid, though don't need to put anything here since the specific failure will output the message
     }
+
 }
 
-
 ?>
+
+
 
 <form method="POST">
     <label for="email">Email</label>
@@ -130,3 +133,46 @@ if (isset($_POST["saved"])) {
     <input type="submit" name="saved" value="Save Profile"/>
 </form>
 <?php require(__DIR__ . "/partials/flash.php");?>
+
+<?php
+	getWeeklyScores();
+?>
+
+
+<?php
+   	$user_id = get_user_id();
+	$db = getDB();
+	
+	$stmt = $db->prepare("SELECT * FROM Scores WHERE :id=user_id LIMIT 10");
+	$r = $stmt->execute([
+	":id"=>$user_id
+	]);
+	
+	if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else {
+        flash("There was a problem fetching the results");
+		}
+?>
+
+<div class="results">
+    <?php if (count($results) > 0): ?>
+        <div class="list-group">
+            <?php foreach ($results as $r): ?>
+                <div class="list-group-item">
+                    <div>
+                        <div>Score:</div>
+                        <div><?php safer_echo($r["score"]); ?></div>
+                    </div>
+                    <div>
+                        <div>Date:</div>
+                        <div><?php safer_echo($r["created"]); ?></div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <p>No results</p>
+    <?php endif; ?>
+</div>
