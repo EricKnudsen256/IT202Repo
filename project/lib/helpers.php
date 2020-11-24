@@ -43,7 +43,7 @@ function getWeeklyScores() {
 	$currentTime = date('Y-m-d H:i:s');
 	$oneWeekAgo = strtotime("-1 week");
 	$db = getDB();
-	$stmt = $db->prepare("SELECT * FROM Scores WHERE :oneWeekAgo > created order by score ASC");
+	$stmt = $db->prepare("SELECT * FROM Scores WHERE :oneWeekAgo > created order by score ASC LIMIT 10");
 	$r = $stmt->execute([
 		":oneWeekAgo"=>$oneWeekAgo
 	]);
@@ -57,7 +57,7 @@ function getMonthlyScores() {
 	$currentTime = date('Y-m-d H:i:s');
 	$oneWeekAgo = strtotime("-1 month");
 	$db = getDB();
-	$stmt = $db->prepare("SELECT * FROM Scores WHERE :oneWeekAgo > created order by score ASC");
+	$stmt = $db->prepare("SELECT * FROM Scores WHERE :oneWeekAgo > created order by score ASC LIMIT 10");
 	$r = $stmt->execute([
 		":oneWeekAgo"=>$oneWeekAgo
 	]);
@@ -71,7 +71,7 @@ function getAllTimeScores() {
 	$currentTime = date('Y-m-d H:i:s');
 
 	$db = getDB();
-	$stmt = $db->prepare("SELECT * FROM Scores order by score ASC");
+	$stmt = $db->prepare("SELECT * FROM Scores order by score ASC LIMIT 10");
 	$r = $stmt->execute([
 	]);
 	
