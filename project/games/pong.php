@@ -1,6 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 <head>
+
+
 <script>
 //modified from http://jsfiddle.net/bencentra/q1s8gmqv/?utm_source=website&utm_medium=embed&utm_campaign=q1s8gmqv
 var canvas;
@@ -31,6 +34,9 @@ var color2 = '#0000BC';
 
 var time;
 var rotation = 0;
+
+
+var sentScore = false;
 
 // Keep track of pressed keys
 var keys = {
@@ -334,6 +340,30 @@ function getRandomColor() {
   return color;
 }
 
+        function sendScore() {
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let json = JSON.parse(this.responseText);
+                    if (json) {
+                        if (json.status == 200) {
+                            alert("You have gotten some score");
+                            location.reload();
+                        } else {
+                            alert(json.error);
+                        }
+                    }
+                }
+            };
+	    xhttp.open("POST", "https://web.njit.edu/~ek256/IT202Repo/project/api/changeScore.php", true);
+           
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          
+            xhttp.send();	   
+        }
+
+
 function gameLoop() {
     erase();
     movePaddle();
@@ -349,6 +379,14 @@ function gameLoop() {
     for (let i = 0; i < drawables.length; i++) {
         drawables[i].draw();
     }
+
+    if(leftScore >= 1 && !sentScore)
+    {
+	sendScore();
+	sentScore = true;
+    }
+
+
 }
 </script>
 </head>
@@ -361,3 +399,4 @@ function gameLoop() {
 	</main>
 </body>
 </html>
+
