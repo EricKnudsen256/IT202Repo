@@ -162,12 +162,8 @@ if (isset($_POST["saved"])) {
             <?php foreach ($results as $r): ?>
                 <div class="list-group-item">
                     <div>
-                        <div>Score:</div>
+                        <div>Current Point Balance:</div>
                         <div><?php safer_echo($r["score"]); ?></div>
-                    </div>
-                    <div>
-                        <div>Date:</div>
-                        <div><?php safer_echo($r["created"]); ?></div>
                     </div>
                 </div>
             <?php endforeach; ?>

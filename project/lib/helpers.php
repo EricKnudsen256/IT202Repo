@@ -114,6 +114,13 @@ function getURL($path) {
     return $_SERVER["CONTEXT_PREFIX"] . "/IT202/project/$path";
 }
 
+function UpdatePoints() {
+
+$db = getDB();
+$stmt = $db->prepare("UPDATE Scores SET score = (SELECT SUM(points_change) from PointsHistory WHERE user_id = :id) where user_id = :id");
+$stmt->execute([":id"=>get_user_id()]);
+
+}
 
 
 //end flash
