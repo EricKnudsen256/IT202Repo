@@ -7,7 +7,7 @@ if (!is_logged_in()) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
     die(header("Location: login.php"));
 }
-
+UpdateCompetitions();
 
 $currentID = get_user_id();
 $currentUsername = get_username();
@@ -135,23 +135,34 @@ if (isset($_POST["saved"])) {
 <?php require(__DIR__ . "/partials/flash.php");?>
 
 <?php
-	getWeeklyScores();
-?>
-
-
-<?php
    	$user_id = get_user_id();
 	$db = getDB();
 	
-	$stmt = $db->prepare("SELECT * FROM Scores WHERE :id=user_id LIMIT 10");
+	$stmt = $db->prepare("SELECT * FROM Scores WHERE :id=user_id");
 	$r = $stmt->execute([
 	":id"=>$user_id
 	]);
 	
-	if ($r) {
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    else {
+	if ($r)
+	{
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	if($results == []) 
+	{
+	    InitScoreEntry();
+	    $stmt = $db->prepare("SELECT * FROM Scores WHERE :id=user_id");
+            $r = $stmt->execute([
+            ":id"=>$user_id
+	    ]);
+	    $results = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+	}
+	foreach($results as $res)
+	{
+	    $balance = $res["score"];
+	    $_SESSION["balance"] = $balance;	
+	}
+    if (!$r) {
         flash("There was a problem fetching the results");
 		}
 ?>

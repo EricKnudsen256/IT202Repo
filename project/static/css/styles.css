@@ -1,4 +1,4 @@
-/* design intentionally made horrible to see who doesn't change it*/
+
 body {
     background-color: #ffcc99;
     font-size: 20;
@@ -48,4 +48,9 @@ input:nth-of-type(4) {
 input:nth-of-type(5) {
     margin-left: 25px !important;
     margin-right: 25px !important;
+}
+
+.list-group-item {
+    border: 1px solid black;
+    font-weight: bold;
 }
