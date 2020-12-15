@@ -56,6 +56,8 @@ if (isset($_POST["register"])) {
             //let's just see what's returned
             echo "db returned: " . var_export($r, true);
             $e = $stmt->errorInfo();
+
+	    
             if ($e[0] == "00000") {
                 echo "<br>Welcome! You successfully registered, please login.";
             }

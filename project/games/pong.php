@@ -166,9 +166,9 @@ function doAI() {
     if (ball.x >= canvas.width * .6) {
         let paddleHalf = paddleHeight / 2;
         if (ball.y > rightPaddle.y + paddleHalf) {
-            rightPaddle.y += rightPaddle.s;
+            rightPaddle.y += rightPaddle.s / 1.5;
         } else if (ball.y < rightPaddle.y) {
-            rightPaddle.y -= rightPaddle.s;
+            rightPaddle.y -= rightPaddle.s / 1.5;
         }
     }
     clampToCanvas(rightPaddle);

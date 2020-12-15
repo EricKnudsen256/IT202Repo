@@ -18,6 +18,7 @@
 </form>
 
 <?php
+
 if (isset($_POST["login"])) {
     $email = null;
     $username = null;

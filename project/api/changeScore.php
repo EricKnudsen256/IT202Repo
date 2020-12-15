@@ -11,18 +11,21 @@ if (isset($_GET["test"])) {
 
 
 $user = get_user_id();
-    $score = 10;
+    $points_change = 10;
+    $reason = "Game points";
     $user_id = get_user_id();
     $date = date('Y-m-d H:i:s');
 
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO Scores(user_id, score, created) VALUES(:user_id, :score, :created)");
+    $stmt = $db->prepare("INSERT INTO PointsHistory(user_id, points_change, reason, created) VALUES(:user_id, :points_change, :reason, :created)");
 	$r = $stmt->execute([
 		":user_id"=>$user_id,
-		":score"=>$score,
+		":points_change"=>$points_change,
+		":reason"=>$reason,
 		":created"=>$date
 	]);
     if ($r) {
+	UpdatePoints();
         $response = ["status" => 200];
         echo json_encode($response);
         die();
