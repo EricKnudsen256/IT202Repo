@@ -19,7 +19,7 @@ if(isset($_GET["page"])){
 }
 
 $db = getDB();
-$stmt = $db->prepare("SELECT count(*) as total from Competitions WHERE paid_out = 0");
+$stmt = $db->prepare("SELECT count(*) as total from PointsHistory WHERE user_id = :id");
 $stmt->execute([":id"=>get_user_id()]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 $total = 0;
@@ -28,7 +28,7 @@ if($result){
 }
 $total_pages = ceil($total / $per_page);
 $offset = ($page-1) * $per_page;
-$stmt = $db->prepare("SELECT c.*, c.name as nme from UserCompetitions uc LEFT JOIN Competitions c on c.id = uc.competition_id where c.user_id = :id LIMIT :offset, :count");
+$stmt = $db->prepare("SELECT * from PointsHistory where user_id = :id LIMIT :offset, :count");
 //need to use bindValue to tell PDO to create these as ints
 //otherwise it fails when being converted to strings (the default behavior)
 $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
@@ -43,10 +43,8 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
-
-
     <div class="container-fluid">
-    <h3>My Competitions</h3>
+    <h3>Point History</h3>
     <div class="row">
     <div class="card-group">
 <?php if($results && count($results) > 0):?>
@@ -55,13 +53,13 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <div class="card-title">
-                        <?php safer_echo($r["name"]);?>
+                        <div>ID: <?php safer_echo($r["id"])?>
                     </div>
                     <div class="card-text">
-			<div>Created: <?php safer_echo($r["created"]); ?></div>
-			<div>Expires: <?php safer_echo($r["expires"]); ?></div>
-			<div>Participants: <?php safer_echo($r["participants"]); ?></div>
-			<div>Reward: <?php safer_echo($r["reward"]); ?></div>
+			<div>Point Change: <?php safer_echo($r["points_change"]); ?></div>
+			<div>Reason: <?php safer_echo($r["reason"]); ?></div>
+			<div>Date: <?php safer_echo($r["created"]); ?></div>
+			</br>
                     </div>
 
                 </div>
@@ -72,13 +70,13 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php else:?>
 <div class="col-auto">
     <div class="card">
-       You have not been in any competitions.
+       You do not have any points.
     </div>
 </div>
 <?php endif;?>
     </div>
     </div>
-        <nav aria-label="My Competitions">
+        <nav aria-label="My Point History">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
                     <a class="page-link" href="?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
