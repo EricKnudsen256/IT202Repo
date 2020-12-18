@@ -1,11 +1,9 @@
 
-<!DOCTYPE html>
-<html>
-<head>
-
 
 <script>
 //modified from http://jsfiddle.net/bencentra/q1s8gmqv/?utm_source=website&utm_medium=embed&utm_campaign=q1s8gmqv
+
+
 var canvas;
 var context;
 var loop;
@@ -51,6 +49,7 @@ var keys = {
 var leftScore = 0;
 var rightScore = 0;
 function init() {
+
     canvas = document.getElementById("board");
     if (canvas.getContext) {
         context = canvas.getContext("2d");
@@ -390,13 +389,14 @@ function gameLoop() {
 }
 </script>
 </head>
+
 <body onload="init();">
+
 	<a href="http://bencentra.com/2017-07-11-basic-html5-canvas-games.html">Collection of Canvas based games by Ben Centra</a>
 	<main>
 		<canvas id="board" width="600px" height="600px" style="border: 1px solid black;">
-		
+				
 		</canvas>
 	</main>
 </body>
 </html>
-
