@@ -43,13 +43,11 @@ function getWeeklyScores() {
 	$currentTime = date('Y-m-d H:i:s');
 	$oneWeekAgo = strtotime("-1 week");
 	$db = getDB();
-	$stmt = $db->prepare("SELECT * FROM Scores WHERE :oneWeekAgo > created order by score ASC LIMIT 10");
-	$r = $stmt->execute([
-		":oneWeekAgo"=>$oneWeekAgo
-	]);
+	$stmt = $db->prepare("SELECT user_id as id, sum(points_change) as points from PointsHistory group by user_id");
+	$r = $stmt->execute([]);
 	
 	if ($r) {
-		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 
@@ -63,7 +61,7 @@ function getMonthlyScores() {
 	]);
 	
 	if ($r) {
-		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 
@@ -76,7 +74,7 @@ function getAllTimeScores() {
 	]);
 	
 	if ($r) {
-		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 
